@@ -1,25 +1,20 @@
 ;(function(window, undefined) {
   'use strict';
 
-  // Library's version
   var VERSION = '0.0.1';
-  
   var CLASS_MAIN = 'vonqValidator';
   var CLASS_ERROR = 'vonqValidatorErrorPopup';
 
-  // PRIVATE
-
-  // Library's settings
+  /**
+   * Library's settings
+   */
   var settings = {
-    locale: 'en',
     minPasswordLength: 6,
-
     requiredError: 'This field is required',
     passwordError: 'Password must be more than 6 symbols',
     emailError: 'Please enter a valid email address. For example: you@domain.com'
   };
 
-  
   /**
    * Checking object type
    * 
