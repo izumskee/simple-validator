@@ -21,14 +21,13 @@
       </div>
     </form>
   </div>
-  
 </body>
 <script type="text/javascript">
-  vonqValidator.config('minPasswordLength', 3);
+  vonqValidator.config('minPasswordLength', 4); // Setup validator config
 
   var button = document.getElementById('submit');
 
-  button.addEventListener('click', function(){
+  button.addEventListener('click', function() {
     vonqValidator.validate();
   }, false);
 </script>

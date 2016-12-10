@@ -19,7 +19,13 @@
     emailError: 'Please enter a valid email address. For example: you@domain.com'
   };
 
-  // Checking type
+  
+  /**
+   * Checking object type
+   * 
+   * @param  {Element} obj
+   * @param  {String} type
+   */
   function is(obj, type) {
     var c = Object.prototype.toString.call(obj).slice(8, -1);
     return obj !== undefined && 
@@ -27,27 +33,49 @@
            c.toLowerCase() === type.toLowerCase();
   }
 
-  // Validate required checkbox
-  function requiredCheckboxValidation(checkbox) {}
+  /**
+   * Validate required checkbox element
+   * 
+   * @param  {Element} element
+   */
+  function requiredCheckboxValidation(element) {}
 
-  // Validate required input
+  /**
+   * Validate required input
+   * 
+   * @param  {String} value
+   */
   function requiredInputValidation(value) {
     return value.replace(/(^\s+|\s+$)/g,'') !== '';
   }
 
-  // Validate email
+  /**
+   * Validate email
+   * 
+   * @param  {String} value
+   */
   function emailValidation(value) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(value);
   }
-
-  // Validate password
+  /**
+   * Validate password
+   * 
+   * @param  {String} value
+   */
   function passwordValidation(value) {
     var passLength = value.length;
     return passLength >= settings.minPasswordLength;
   }
 
-  function createPopup(x, y, pos, content) {
+  /**
+   * Create tooltip
+   * 
+   * @param  {Number} x
+   * @param  {Number} y
+   * @param  {String} content
+   */
+  function createPopup(x, y, content) {
     var doc = window.document;
     var popup = doc.createElement('div');
 
@@ -62,8 +90,10 @@
     return popup;
   }
 
-  // Remove all popups
-  function removeAllPopups() {
+  /**
+   * Remove all tooltips
+   */
+  function removeAllTooltips() {
     var doc = window.document;
     var popups = doc.querySelectorAll('.' + CLASS_ERROR);
     for (var i = 0; i < popups.length; i++) {
@@ -100,14 +130,15 @@
     return vonqValidator;
   };
 
-
-  // Validate method
+  /**
+   * Validate method
+   */
   vonqValidator.validate = function() {
     var doc = window.document;
     var fields = doc.querySelectorAll('.' + CLASS_MAIN);
     var result = false;
 
-    removeAllPopups();
+    removeAllTooltips();
 
     for (var i = 0; i < fields.length; i++) {
       var element = fields[i];
@@ -119,19 +150,19 @@
         case 'text':
           result = requiredInputValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, null, settings.requiredError);
+            createPopup(rect.left, bottomPosition, settings.requiredError);
           }
           break;
         case 'email':
           result = emailValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, null, settings.emailError);
+            createPopup(rect.left, bottomPosition, settings.emailError);
           }
           break;
         case 'password':
           result = passwordValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, null, settings.passwordError);
+            createPopup(rect.left, bottomPosition, settings.passwordError);
           }
           break;
         default:
@@ -142,14 +173,13 @@
     return result;
   };
 
-
-
-
-  // Set custom validator
+  /**
+   * Set custom validator
+   * 
+   * @param  {String} name
+   * @param  {Function} func
+   */
   vonqValidator.setValidator = function(name, func) {};
-
-  // Set custom styles
-  vonqValidator.setCustomStyle = function(name, func) {};
 
 
   // Avoid conflicts with other namespaces

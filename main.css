@@ -73,6 +73,9 @@ input[type="button"]:focus {
   box-shadow: 0 0 0 1px #0068F0;
 }
 
+
+/* Tooltip styles */
+
 .vonqValidatorErrorPopup {
   position: fixed;
   width: 220px;
