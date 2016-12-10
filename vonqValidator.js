@@ -52,17 +52,17 @@
     var popup = doc.createElement('div');
 
     popup.className = CLASS_ERROR;
-    popup.style.position = 'fixed';
-    popup.style.left = x + 20 + 'px';
-    popup.style.top = y - 4 + 'px';
-    popup.style.backgroundColor = '#f00';
-    popup.style.color = '#fff';
-    popup.style.padding = '4px 10px';
+    popup.style.position = 'absolute';
+    popup.style.left = x + 'px';
+    popup.style.bottom = y + 'px';
     popup.innerHTML = content;
 
     doc.body.appendChild(popup);
+
+    return popup;
   }
 
+  // Remove all popups
   function removeAllPopups() {
     var doc = window.document;
     var popups = doc.querySelectorAll('.' + CLASS_ERROR);
@@ -112,26 +112,26 @@
     for (var i = 0; i < fields.length; i++) {
       var element = fields[i];
 
+      var rect = element.getBoundingClientRect();
+      var bottomPosition = doc.body.clientHeight - rect.top + 10;
+
       switch (element.type) {
         case 'text':
           result = requiredInputValidation(element.value);
           if (!result) {
-            var rect = element.getBoundingClientRect();
-            createPopup(rect.right, rect.top, null, settings.requiredError);
+            createPopup(rect.left, bottomPosition, null, settings.requiredError);
           }
           break;
         case 'email':
           result = emailValidation(element.value);
           if (!result) {
-            var rect = element.getBoundingClientRect();
-            createPopup(rect.right, rect.top, null, settings.emailError);
+            createPopup(rect.left, bottomPosition, null, settings.emailError);
           }
           break;
         case 'password':
           result = passwordValidation(element.value);
           if (!result) {
-            var rect = element.getBoundingClientRect();
-            createPopup(rect.right, rect.top, null, settings.passwordError);
+            createPopup(rect.left, bottomPosition, null, settings.passwordError);
           }
           break;
         default:
