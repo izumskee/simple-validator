@@ -4,7 +4,8 @@
   // Library's version
   var VERSION = '0.0.1';
   
-  var CLASS_SELECTOR = '.vonqValidator';
+  var CLASS_MAIN = 'vonqValidator';
+  var CLASS_ERROR = 'vonqValidatorErrorPopup';
 
   // PRIVATE
 
@@ -50,7 +51,7 @@
     var doc = window.document;
     var popup = doc.createElement('div');
 
-    popup.className = 'vonqValidatorErrorPopup'
+    popup.className = CLASS_ERROR;
     popup.style.position = 'fixed';
     popup.style.left = x + 20 + 'px';
     popup.style.top = y - 4 + 'px';
@@ -64,7 +65,7 @@
 
   function removeAllPopups() {
     var doc = window.document;
-    var popups = doc.querySelectorAll('.vonqValidatorErrorPopup');
+    var popups = doc.querySelectorAll('.' + CLASS_ERROR);
     for (var i = 0; i < popups.length; i++) {
       doc.body.removeChild(popups[i]);
     }
@@ -99,9 +100,11 @@
     return vonqValidator;
   };
 
+
+  // Validate method
   vonqValidator.validate = function() {
     var doc = window.document;
-    var fields = doc.querySelectorAll(CLASS_SELECTOR);
+    var fields = doc.querySelectorAll('.' + CLASS_MAIN);
     var result = false;
 
     removeAllPopups();
