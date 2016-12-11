@@ -139,6 +139,10 @@
           }
           break;
         default:
+          result = _requiredInputValidation(element.value);
+          if (!result) {
+            _createTooltip(element.id, rect.left, bottomPosition, settings.requiredError);
+          }
           break;
       }
     };
