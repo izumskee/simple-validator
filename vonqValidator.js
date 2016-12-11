@@ -1,8 +1,8 @@
 ;(function(window) {
   'use strict';
   
-  var vonqValidator = function(id) {
-    var ELEMENT;
+  var vonqValidator = function(className) {
+    var ELEMENTS = [];
     var CLASS_ERROR = 'vonqValidatorErrorPopup';
 
     var settings = {
@@ -12,10 +12,10 @@
       emailError: 'Please enter a valid email address. For example: you@domain.com'
     };
 
-    if (id) {
-      ELEMENT = window.document.getElementById(id);
+    if (className) {
+      ELEMENTS = window.document.querySelectorAll('.' + className);
     } else {
-      throw new TypeError('ID not provided');
+      throw new TypeError('Class name not provided');
     }
 
     var _is = function(obj, type) {
@@ -41,11 +41,11 @@
       return passLength >= settings.minPasswordLength;
     }
 
-    var _createTooltip = function(id, posX, posY, content) {
+    var _createTooltip = function(posX, posY, content) {
       var doc = window.document;
       var t = doc.createElement('div');
 
-      t.className = CLASS_ERROR + ' ' + CLASS_ERROR + '-' + id;
+      t.className = CLASS_ERROR;
       t.style.position = 'absolute';
       t.style.left = posX + 'px';
       t.style.bottom = posY + 'px';
@@ -56,11 +56,13 @@
       return t;
     }
 
-    var _removeTooltip = function(id) {
+    var _removeAllTooltips = function(id) {
       var doc = window.document;
-      var tooltip = doc.querySelector('.' + CLASS_ERROR + '-' + id);
-      if (tooltip) {
-        doc.body.removeChild(tooltip);
+      var tooltips = doc.querySelectorAll('.' + CLASS_ERROR);
+      for (var i = 0; i < tooltips.length; i++) {
+        if (tooltips[i]) {
+          doc.body.removeChild(tooltips[i]);
+        }
       }
     }
 
@@ -105,51 +107,56 @@
 
     var validate = function() {
       var doc = window.document;
-      var element = ELEMENT;
-      var result = false;
+      
+      if (ELEMENTS.length > 0) {
+        _removeAllTooltips();
 
-      _removeTooltip(element.id);
+        for (var i = 0; i < ELEMENTS.length; i++) {
+          var element = ELEMENTS[i];
+          var result = false;
 
-      var rect = element.getBoundingClientRect();
-      var bottomPosition = doc.body.clientHeight - rect.top + 10;
+          var rect = element.getBoundingClientRect();
+          var bottomPosition = doc.body.clientHeight - rect.top + 10;
 
-      switch (element.type) {
-        case 'text':
-          result = _requiredInputValidation(element.value);
-          if (!result) {
-            _createTooltip(element.id, rect.left, bottomPosition, settings.requiredError);
+          switch (element.type) {
+            case 'text':
+              result = _requiredInputValidation(element.value);
+              if (!result) {
+                _createTooltip(rect.left, bottomPosition, settings.requiredError);
+              }
+              break;
+            case 'email':
+              result = _emailValidation(element.value);
+              if (!result) {
+                _createTooltip(rect.left, bottomPosition, settings.emailError);
+              }
+              break;
+            case 'checkbox':
+              result = _checkboxValidation(element);
+              if (!result) {
+                _createTooltip(rect.left - 2, bottomPosition, settings.requiredError);
+              }
+              break;
+            case 'password':
+              result = _passwordValidation(element.value);
+              if (!result) {
+                _createTooltip(rect.left, bottomPosition, settings.passwordError);
+              }
+              break;
+            default:
+              result = _requiredInputValidation(element.value);
+              if (!result) {
+                _createTooltip(rect.left, bottomPosition, settings.requiredError);
+              }
+              break;
           }
-          break;
-        case 'email':
-          result = _emailValidation(element.value);
-          if (!result) {
-            _createTooltip(element.id, rect.left, bottomPosition, settings.emailError);
-          }
-          break;
-        case 'checkbox':
-          result = _checkboxValidation(element);
-          if (!result) {
-            _createTooltip(element.id, rect.left - 2, bottomPosition, settings.requiredError);
-          }
-          break;
-        case 'password':
-          result = _passwordValidation(element.value);
-          if (!result) {
-            _createTooltip(element.id, rect.left, bottomPosition, settings.passwordError);
-          }
-          break;
-        default:
-          result = _requiredInputValidation(element.value);
-          if (!result) {
-            _createTooltip(element.id, rect.left, bottomPosition, settings.requiredError);
-          }
-          break;
+        }
       }
     };
 
     // Public methods
     return {
-      element: ELEMENT,
+      elements: ELEMENTS,
       settings: settings,
       config: config,
       setValidator: setValidator,

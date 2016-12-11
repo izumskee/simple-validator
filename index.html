@@ -7,16 +7,16 @@
 </head>
 <body>
   <div class="wrapper">
-    <div class="title">Sample Form</div>
+    <div class="title">Form</div>
     <form class="form">
       <div class="form-section">
-        <input type="text" placeholder="Name" id="name" />
-        <input type="text" placeholder="Phone" id="phone" />
-        <input type="email" placeholder="Email" id="email" />
-        <input type="password" placeholder="Password" id="password" />
+        <input type="text" placeholder="Name" class="vonqValidator" />
+        <input type="text" placeholder="Phone" />
+        <input type="email" placeholder="Email" class="vonqValidator" />
+        <input type="password" placeholder="Password" class="vonqValidator" />
       </div>
       <div class="form-section">
-        <input type="checkbox" id="terms" /><label for="terms">I accept the Terms of Service</label>
+        <input type="checkbox" id="terms" class="vonqValidator" /><label for="terms">I accept the Terms of Service</label>
       </div>
       <div class="form-section">
         <input type="button" id="submit" value="Submit">
@@ -26,28 +26,22 @@
 </body>
 <script type="text/javascript" src="vonqValidator.js"></script>
 <script type="text/javascript">
-  var validatedPassword = new vonqValidator('password')
+  var validator = new vonqValidator('vonqValidator')
     .config({
       minPasswordLength: 4,
-      passwordError: 'Passwords must contain lower and upper case letters'
+      passwordError: 'Passwords must contain lower and upper case letters',
+      emailError: 'Неправильный email'
     })
     .setValidator('password', function(value) {
       var lCase = value.search(/[a-z]/) !== -1;
       var hCase = value.search(/[A-Z]/) !== -1;
       return lCase && hCase;
     });
-  var validatedEmail = new vonqValidator('email')
-    .config({ emailError: 'Неправильный email' });
-  var validatedCheckbox = new vonqValidator('terms');
-  var validatedName = new vonqValidator('name');
 
   // Run validator
   var el = document.getElementById('submit');
   el.addEventListener('click', function() {
-    validatedPassword.validate();
-    validatedEmail.validate();
-    validatedCheckbox.validate();
-    validatedName.validate();
+    validator.validate();
   }, false); 
 </script>
 </html>
