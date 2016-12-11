@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Vonq Assignment</title>
   <link rel="stylesheet" href="main.css">
-  <script type="text/javascript" src="vonqValidator.js"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -17,16 +16,29 @@
         <input type="password" class="vonqValidator" placeholder="Password">
       </div>
       <div class="form-section">
+        <input type="checkbox" class="vonqValidator" id="cbox2" value="v"> <label for="cbox2">I accept the Terms of Service</label>
+      </div>
+      <div class="form-section">
         <input type="button" id="submit" value="Submit">
       </div>
     </form>
   </div>
 </body>
+<script type="text/javascript" src="vonqValidator.js"></script>
 <script type="text/javascript">
-  vonqValidator.config('minPasswordLength', 4); // Setup validator config
+  // Setup validator config
+  vonqValidator.config('minPasswordLength', 4)
+               .config({
+                  requiredError: 'Это поле обязательное',
+                });
+  
+  // Set custom validator function
+  vonqValidator.setValidator('password', function(value) {
+    return value.length >= 2;
+  });
 
+  // Run validator
   var button = document.getElementById('submit');
-
   button.addEventListener('click', function() {
     vonqValidator.validate();
   }, false);

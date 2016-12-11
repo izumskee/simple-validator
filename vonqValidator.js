@@ -11,7 +11,7 @@
   var settings = {
     minPasswordLength: 6,
     requiredError: 'This field is required',
-    passwordError: 'Password must be more than 6 symbols',
+    passwordError: 'Password invalid',
     emailError: 'Please enter a valid email address. For example: you@domain.com'
   };
 
@@ -21,7 +21,7 @@
    * @param  {Element} obj
    * @param  {String} type
    */
-  function is(obj, type) {
+  var _is = function(obj, type) {
     var c = Object.prototype.toString.call(obj).slice(8, -1);
     return obj !== undefined && 
            obj !== null && 
@@ -33,14 +33,16 @@
    * 
    * @param  {Element} element
    */
-  function requiredCheckboxValidation(element) {}
+  var _checkboxValidation = function(element) {
+    return element.checked;
+  }
 
   /**
    * Validate required input
    * 
    * @param  {String} value
    */
-  function requiredInputValidation(value) {
+  var _requiredInputValidation = function(value) {
     return value.replace(/(^\s+|\s+$)/g,'') !== '';
   }
 
@@ -49,16 +51,17 @@
    * 
    * @param  {String} value
    */
-  function emailValidation(value) {
+  var _emailValidation = function(value) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(value);
   }
+
   /**
    * Validate password
    * 
    * @param  {String} value
    */
-  function passwordValidation(value) {
+  var _passwordValidation = function(value) {
     var passLength = value.length;
     return passLength >= settings.minPasswordLength;
   }
@@ -70,7 +73,7 @@
    * @param  {Number} y
    * @param  {String} content
    */
-  function createPopup(x, y, content) {
+  var _createPopup = function(x, y, content) {
     var doc = window.document;
     var popup = doc.createElement('div');
 
@@ -88,7 +91,7 @@
   /**
    * Remove all tooltips
    */
-  function removeAllTooltips() {
+  var _removeAllTooltips = function() {
     var doc = window.document;
     var popups = doc.querySelectorAll('.' + CLASS_ERROR);
     for (var i = 0; i < popups.length; i++) {
@@ -100,7 +103,12 @@
 
   // PUBLIC
 
-  // Set config
+  /**
+   * Set config
+   * 
+   * @param  {String} param
+   * @param  {String|Number|Object} value
+   */
   vonqValidator.config = function(param, value) {
     var argsLength = arguments.length;
 
@@ -108,7 +116,7 @@
       throw new TypeError('Missing required parameters');
     }
 
-    if (is(param, 'Object')) {
+    if (_is(param, 'Object')) {
       for (var p in param) {
         if (param.hasOwnProperty(p) && settings.hasOwnProperty(p)) {
           settings[p] = param[p];
@@ -133,7 +141,7 @@
     var fields = doc.querySelectorAll('.' + CLASS_MAIN);
     var result = false;
 
-    removeAllTooltips();
+    _removeAllTooltips();
 
     for (var i = 0; i < fields.length; i++) {
       var element = fields[i];
@@ -143,21 +151,27 @@
 
       switch (element.type) {
         case 'text':
-          result = requiredInputValidation(element.value);
+          result = _requiredInputValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, settings.requiredError);
+            _createPopup(rect.left, bottomPosition, settings.requiredError);
           }
           break;
         case 'email':
-          result = emailValidation(element.value);
+          result = _emailValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, settings.emailError);
+            _createPopup(rect.left, bottomPosition, settings.emailError);
+          }
+          break;
+        case 'checkbox':
+          result = _checkboxValidation(element);
+          if (!result) {
+            _createPopup(rect.left, bottomPosition, settings.requiredError);
           }
           break;
         case 'password':
-          result = passwordValidation(element.value);
+          result = _passwordValidation(element.value);
           if (!result) {
-            createPopup(rect.left, bottomPosition, settings.passwordError);
+            _createPopup(rect.left, bottomPosition, settings.passwordError);
           }
           break;
         default:
@@ -174,8 +188,18 @@
    * @param  {String} name
    * @param  {Function} func
    */
-  vonqValidator.setValidator = function(name, func) {};
-
+  vonqValidator.setValidator = function(name, func) {
+    switch (name) {
+      case 'email':
+        _emailValidation = func;
+        break;
+      case 'password':
+        _passwordValidation = func;
+        break;
+      default:
+        break;
+    }
+  };
 
   // Avoid conflicts with other namespaces
   var cachedValidator = window.vonqValidator;
