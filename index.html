@@ -27,14 +27,17 @@
 <script type="text/javascript" src="vonqValidator.js"></script>
 <script type="text/javascript">
   var validatedPassword = new vonqValidator('password')
-    .setValidator('password',function(value) {
-      return value.length >= 2;
-    });
-
-  var validatedEmail = new vonqValidator('email')
     .config({
-      emailError: 'Неправильный email',
+      minPasswordLength: 4,
+      passwordError: 'Passwords must contain lower and upper case letters'
+    })
+    .setValidator('password', function(value) {
+      var lCase = value.search(/[a-z]/) !== -1;
+      var hCase = value.search(/[A-Z]/) !== -1;
+      return lCase && hCase;
     });
+  var validatedEmail = new vonqValidator('email')
+    .config({ emailError: 'Неправильный email' });
   var validatedCheckbox = new vonqValidator('terms');
   var validatedName = new vonqValidator('name');
 
