@@ -67,8 +67,8 @@ input[type="checkbox"] {
   box-shadow: none;
   background: none;
 }
-input[type="checkbox"]:focus {
-  outline: 1px solid #1E90FF;
+input[type="checkbox"]:focus ~ label {
+  color: #1E90FF;
 }
 
 input[type="button"] {
