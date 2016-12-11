@@ -75,17 +75,17 @@
    */
   var _createTooltip = function(x, y, content) {
     var doc = window.document;
-    var popup = doc.createElement('div');
+    var t = doc.createElement('div');
 
-    popup.className = CLASS_ERROR;
-    popup.style.position = 'absolute';
-    popup.style.left = x + 'px';
-    popup.style.bottom = y + 'px';
-    popup.innerHTML = content;
+    t.className = CLASS_ERROR;
+    t.style.position = 'absolute';
+    t.style.left = x + 'px';
+    t.style.bottom = y + 'px';
+    t.innerHTML = content;
 
-    doc.body.appendChild(popup);
+    doc.body.appendChild(t);
 
-    return popup;
+    return t;
   }
 
   /**
