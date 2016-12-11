@@ -10,13 +10,13 @@
     <div class="title">Sample Form</div>
     <form class="form">
       <div class="form-section">
-        <input type="text" class="vonqValidator" placeholder="Name" />
-        <input type="text" placeholder="Phone" />
-        <input type="email" class="vonqValidator" placeholder="Email" />
-        <input type="password" class="vonqValidator" placeholder="Password" />
+        <input type="text" placeholder="Name" id="name" />
+        <input type="text" placeholder="Phone" id="phone" />
+        <input type="email" placeholder="Email" id="email" />
+        <input type="password" placeholder="Password" id="password" />
       </div>
       <div class="form-section">
-        <input type="checkbox" class="vonqValidator" id="cbox" /><label for="cbox">I accept the Terms of Service</label>
+        <input type="checkbox" id="terms" /><label for="terms">I accept the Terms of Service</label>
       </div>
       <div class="form-section">
         <input type="button" id="submit" value="Submit">
@@ -26,23 +26,25 @@
 </body>
 <script type="text/javascript" src="vonqValidator.js"></script>
 <script type="text/javascript">
-  // Setup validator config
-  vonqValidator.config('minPasswordLength', 4)
-               .config({
-                  passwordError: 'Пароль не подходит',
-                });
-  
-  // Set custom validator function
-  vonqValidator.setValidator('password', function(value) {
-    return value.length >= 2;
-  });
+  var validatedPassword = new vonqValidator('password')
+    .setValidator('password',function(value) {
+      return value.length >= 2;
+    });
+
+  var validatedEmail = new vonqValidator('email')
+    .config({
+      emailError: 'Неправильный email',
+    });
+  var validatedCheckbox = new vonqValidator('terms');
+  var validatedName = new vonqValidator('name');
 
   // Run validator
   var el = document.getElementById('submit');
-  if (el.addEventListener) {
-    el.addEventListener('click', vonqValidator.validate, false); 
-  } else if (el.attachEvent)  {
-    el.attachEvent('onclick', vonqValidator.validate);
-  }
+  el.addEventListener('click', function() {
+    validatedPassword.validate();
+    validatedEmail.validate();
+    validatedCheckbox.validate();
+    validatedName.validate();
+  }, false); 
 </script>
 </html>
