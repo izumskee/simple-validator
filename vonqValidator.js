@@ -73,7 +73,7 @@
    * @param  {Number} y
    * @param  {String} content
    */
-  var _createPopup = function(x, y, content) {
+  var _createTooltip = function(x, y, content) {
     var doc = window.document;
     var popup = doc.createElement('div');
 
@@ -153,25 +153,25 @@
         case 'text':
           result = _requiredInputValidation(element.value);
           if (!result) {
-            _createPopup(rect.left, bottomPosition, settings.requiredError);
+            _createTooltip(rect.left, bottomPosition, settings.requiredError);
           }
           break;
         case 'email':
           result = _emailValidation(element.value);
           if (!result) {
-            _createPopup(rect.left, bottomPosition, settings.emailError);
+            _createTooltip(rect.left, bottomPosition, settings.emailError);
           }
           break;
         case 'checkbox':
           result = _checkboxValidation(element);
           if (!result) {
-            _createPopup(rect.left, bottomPosition, settings.requiredError);
+            _createTooltip(rect.left - 2, bottomPosition, settings.requiredError);
           }
           break;
         case 'password':
           result = _passwordValidation(element.value);
           if (!result) {
-            _createPopup(rect.left, bottomPosition, settings.passwordError);
+            _createTooltip(rect.left, bottomPosition, settings.passwordError);
           }
           break;
         default:
