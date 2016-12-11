@@ -103,6 +103,10 @@ input[type="button"]:focus {
   color: #fff;
 }
 
+.vonqValidatorErrorPopup a {
+  color: #fff;
+}
+
 .vonqValidatorErrorPopup::before {
   content: '';
   position: absolute;

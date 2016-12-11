@@ -30,7 +30,7 @@
     .config({
       minPasswordLength: 4,
       passwordError: 'Passwords must contain lower and upper case letters',
-      emailError: 'Неправильный email'
+      requiredError: '<strong>Обязательное</strong> поле'
     })
     .setValidator('password', function(value) {
       var lCase = value.search(/[a-z]/) !== -1;
