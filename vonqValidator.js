@@ -9,6 +9,9 @@
     var MISSING_PARAMETERS_ERROR = 'Missing required parameters';
     var MISSING_SECOND_PARAMETER_ERROR = 'Missing second parameter';
 
+    /**
+     * Basic settings
+    */
     var settings = {
       minPasswordLength: 6,
       tooltipPosition: 'top',
