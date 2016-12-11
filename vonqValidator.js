@@ -1,8 +1,11 @@
 ;(function(window) {
   'use strict';
   
+  var tooltipCounter = 1 ;
+
   var vonqValidator = function(className) {
     var ELEMENTS = [];
+    var TOOLTIPS = [];
     var CLASS_ERROR = 'vonqValidatorErrorPopup';
 
     var EMPTY_CLASS_ERROR = 'Class name not provided';
@@ -87,8 +90,10 @@
     var _createTooltip = function(posX, posY, content) {
       var doc = window.document;
       var t = doc.createElement('div');
+      var tooltipID = 'tooltip-' + tooltipCounter
 
       t.className = CLASS_ERROR + ' ' + settings.tooltipPosition;
+      t.id = tooltipID;
       t.style.position = 'absolute';
       if (settings.tooltipPosition === 'left') {
         t.style.right = posX + 'px';
@@ -108,6 +113,8 @@
 
       doc.body.appendChild(t);
 
+      TOOLTIPS.push(tooltipID);
+
       return t;
     }
 
@@ -117,12 +124,15 @@
      */
     var _removeAllTooltips = function() {
       var doc = window.document;
-      var tooltips = doc.querySelectorAll('.' + CLASS_ERROR);
-      for (var i = 0; i < tooltips.length; i++) {
-        if (tooltips[i]) {
-          doc.body.removeChild(tooltips[i]);
+
+      for (var i = 0; i < TOOLTIPS.length; i++) {
+        var tooltip = doc.getElementById(TOOLTIPS[i]);
+        if (tooltip) {
+          doc.body.removeChild(tooltip);
         }
       }
+
+      TOOLTIPS.length = 0;
     }
 
     /**
@@ -257,6 +267,7 @@
               }
               break;
           }
+          tooltipCounter++;
         }
       }
     };

@@ -16,7 +16,7 @@
         <input type="password" placeholder="Password" class="vonqValidator" />
       </div>
       <div class="form-section">
-        <input type="checkbox" id="terms" class="vonqValidator" /><label for="terms">I accept the Terms of Service</label>
+        <input type="checkbox" id="terms" class="vonqValidator2" /><label for="terms">I accept the Terms of Service</label>
       </div>
       <div class="form-section">
         <input type="button" id="submit" value="Submit">
@@ -37,10 +37,16 @@
       var hCase = value.search(/[A-Z]/) !== -1;
       return lCase && hCase;
     });
+  
+  var validator2 = new vonqValidator('vonqValidator2')
+    .config({
+      tooltipPosition: 'bottom'
+    });
 
   var el = document.getElementById('submit');
   el.addEventListener('click', function() {
     validator.validate();
+    validator2.validate();
   }, false);
 </script>
 </html>
