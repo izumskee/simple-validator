@@ -3,22 +3,22 @@ Simple Validator
 
 ### Usage :
 
-1. Add css file to <head>
+- Add css file to <head>
 ```
 <link rel="stylesheet" href="vonqValidator.css">
 ```
 
-2. Include main script before usage
+- Include main script before usage
 ```
 <script type="text/javascript" src="vonqValidator.js"></script>
 ```
 
-3. Create validator with classname. All element with assigned classname will be 'attached' to validation
+- Create validator with classname. All element with assigned classname will be 'attached' to validation
 ```
 new vonqValidator(className)
 ```
 
-4. Extend config with config() function
+- Extend config with config() function
 ```
 var validator = new vonqValidator('vonqValidator')
   .config({
@@ -39,7 +39,7 @@ var settings = {
 };
 ```
 
-5. Extend default validators
+- Extend default validators
 ```
 var validator = new vonqValidator('vonqValidator')
   .setValidator('password', function(value) {
