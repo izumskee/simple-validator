@@ -272,15 +272,28 @@
       }
     };
 
+    // Provide noConflict function
+    var oldGlobalVar = window.vonqValidator;    
+    var noConflict = function() {
+      if (window.vonqValidator === vonqValidator) {
+        window.vonqValidator = oldGlobalVar;
+      }
+      return this;
+    };
+
     // Public methods
     return {
       elements: ELEMENTS,
       settings: settings,
       config: config,
       setValidator: setValidator,
-      validate: validate
+      validate: validate,
+      noConflict: noConflict
     };
   }
 
-  window.vonqValidator = vonqValidator;
+  // We need that our library is globally accesible, then we save in the window
+  if(typeof(window.vonqValidator) === 'undefined'){
+    window.vonqValidator = vonqValidator;
+  }
 })(window);
