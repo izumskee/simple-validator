@@ -13,12 +13,12 @@ Simple Validator
 <script type="text/javascript" src="vonqValidator.js"></script>
 ```
 
-- Create validator with classname. All element with assigned classname will be 'attached' to validation
+- Create validator with classname. All elements with assigned classname will be 'attached' to validation
 ```
 new vonqValidator(className)
 ```
 
-- Extend config with config() function
+- Extending config
 ```
 var validator = new vonqValidator('vonqValidator')
   .config({
